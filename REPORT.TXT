@@ -1,0 +1,44 @@
+JWT Security Research Report
+
+Overview
+
+JSON Web Tokens (JWTs) are widely used for authentication in web and mobile applications. While they enable stateless and scalable authentication, insecure implementations make JWTs vulnerable to several attacks.
+
+Common JWT Vulnerabilities
+
+alg=none Vulnerability
+Some libraries accept tokens with alg=none, allowing attackers to bypass signature checks.
+
+Weak Secret Keys (HS256)
+If HMAC secrets are guessable (e.g., 12345), attackers can brute-force them and forge tokens.
+
+Key Confusion (RS256 ↔ HS256)
+Misconfigured libraries may accept an RSA public key as an HMAC secret, letting attackers forge tokens.
+
+Replay Attacks
+Tokens without expiration (exp) can be reused indefinitely by attackers.
+
+kid Header Injection
+Some libraries read the kid header unsafely, enabling path traversal or arbitrary file read.
+
+Mitigations (OWASP Best Practices)
+
+Enforce strict signature verification and algorithms.
+
+Use strong, random keys (≥ 256-bit).
+
+Prefer RS256/ES256 over HS256.
+
+Validate exp, nbf, iat, aud, and iss claims.
+
+Rotate keys and implement revocation strategies.
+
+Patch and update JWT libraries regularly.
+
+References
+
+OWASP JWT Cheat Sheet
+
+NIST National Vulnerability Database (NVD)
+
+Auth0 Security Blog
